@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="map_server" type="map_saver" name="map_saver" args="-f /home/buaa/catkin_BH/src/turn_on_robot/map/kkk" output="screen">	
+	</node>
+</launch>

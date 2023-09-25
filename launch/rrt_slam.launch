@@ -1,0 +1,30 @@
+
+<launch>
+  <!-- 开启机器人底层相关节点  -->
+  <include file="$(find turn_on_robot)/launch/turn_on_robot.launch" />
+
+ <!-- rslidar  -->
+  <include file = "$(find rslidar_pointcloud)/launch/rs_lidar_16.launch"/>
+  <include file = "$(find pointcloud_to_laserscan)/launch/pointcloud_to_laserscan.launch"/>
+
+<!-- navigation common params-->
+<rosparam file="$(find turn_on_robot)/param_common/local_costmap_params.yaml"      command="load" ns="move_base_node"/>
+<rosparam file="$(find turn_on_robot)/param_common/global_costmap_params.yaml"     command="load" ns="move_base_node"/>
+<rosparam file="$(find turn_on_robot)/param_common/move_base_params1.yaml"          command="load" ns="move_base_node"/>
+<rosparam file="$(find turn_on_robot)/param_common/base_global_planner_param.yaml" command="load" ns="move_base_node"/>
+<rosparam file="$(find turn_on_robot)/param_common/teb_local_planner_params.yaml"  command="load" ns="move_base_node"/>
+
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+    <rosparam file="$(find turn_on_robot)/param_common/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find turn_on_robot)/param_common/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  </node>
+
+
+<include file="$(find turn_on_robot)/launch/simple.launch" />
+<!-- 开启建图节点  -->
+<include file="$(find turn_on_robot)/launch/include/algorithm_gmapping.launch" />
+
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find turn_on_robot)/rviz/rrt_slam.rviz" />
+
+</launch>
